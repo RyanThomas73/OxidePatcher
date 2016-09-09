@@ -31,6 +31,12 @@ namespace OxidePatcher.Projects
         public ProjectConfiguration Configuration { get; set; }
 
         /// <summary>
+        /// The path to the project configuration .json file.
+        /// </summary>
+        [JsonIgnore]
+        public string ConfigurationFilePath => $"{ProjectFilePath}.json";
+
+        /// <summary>
         /// The oxide patcher version for the file. Used to allow for automatic project updates.
         /// </summary>
         [JsonConverter(typeof(VersionConverter))]
@@ -67,7 +73,7 @@ namespace OxidePatcher.Projects
         public void Save()
         {
             File.WriteAllText(ProjectFilePath, JsonConvert.SerializeObject(this, Formatting.Indented));
-            File.WriteAllText($"{ProjectFilePath}.config", JsonConvert.SerializeObject(Configuration, Formatting.Indented));
+            File.WriteAllText(ConfigurationFilePath, JsonConvert.SerializeObject(Configuration, Formatting.Indented));
         }
 
         /// <summary>
@@ -114,11 +120,11 @@ namespace OxidePatcher.Projects
                 project.IsLegacyVersion = true;
             }
 
-            if(File.Exists($"{project.ProjectFilePath}.config"))
+            if(File.Exists(project.ConfigurationFilePath))
             {
                 try
                 {
-                    var configurationText = File.ReadAllText($"{project.ProjectFilePath}.config");
+                    var configurationText = File.ReadAllText(project.ConfigurationFilePath);
                     project.Configuration = JsonConvert.DeserializeObject<ProjectConfiguration>(configurationText);
                 }
                 catch (FileNotFoundException)

@@ -8,7 +8,7 @@ namespace OxidePatcher
 {
     public partial class ProjectForm : Form
     {
-        private const string CONFIG_FILE_FILTER = "Oxide Project Configuration|*.opj.config";
+        private const string CONFIG_FILE_FILTER = "Oxide Project Configuration|*.opj.json";
         private const string PROJECT_FILE_FILTER = "Oxide Project|*.opj";
 
         private Project projectToUpdate;
